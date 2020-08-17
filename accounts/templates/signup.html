@@ -1,0 +1,8 @@
+<h1>회원가입 페이지</h1>
+
+<!-- action을 공백으로 두면 이 페이지를 렌더링시킨 함수를 자동으로 사용 -->
+<form method="POST" action="">
+    {% csrf_token %}
+    {{ regi_form.as_p }}
+    <input type="submit" value="회원가입">
+</form>

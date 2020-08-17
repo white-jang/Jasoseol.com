@@ -1,0 +1,6 @@
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ jss_form.as_p }} <!--p 태그를 이용, 모델폼 추가-->
+    <input type="submit" value="확인">
+</form>
