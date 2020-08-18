@@ -1,6 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kr">
 
-<form action="" method="POST">
-    {% csrf_token %}
-    {{ jss_form.as_p }} <!--p 태그를 이용, 모델폼 추가-->
-    <input type="submit" value="확인">
-</form>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자소설 생성</title>
+</head>
+
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ jss_form.as_p }}
+        <!--p 태그를 이용, 모델폼 추가-->
+        <input type="submit" value="확인">
+    </form>
+
+    글자 수 : <div class="counted_text">
+
+    </div>
+
+    <script src="{% static 'js/count.js' %}"></script>
+</body>
+
+</html>

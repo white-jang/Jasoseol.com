@@ -17,7 +17,7 @@ class JssForm(forms.ModelForm):
         })
         self.fields['content'].widget.attrs.update({
             'class' : 'jss_content_form',
-        })
+        }) # content 필드에 class 추가 (jss_content_form)
 
 
 class CommentForm(forms.ModelForm):
