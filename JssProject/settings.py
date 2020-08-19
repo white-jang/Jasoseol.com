@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -33,13 +34,23 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
     'accounts',
+    
+    # allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # provider 구글 페이스북 카톡 깃허브 등 소셜로그인 제공업체
+    'allauth.socialaccount.providers.google',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,6 +134,20 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = Path.joinpath(BASE_DIR, 'static')
 
+# 로그인 후에 redirect될 url
 LOGIN_REDIRECT_URL = '/'
 
+# 로그아웃 후에 redirect될 url
 LOGOUT_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = (
+    #Needed to login by username in Django admin, regardless of 'allauth'
+    'django.contrib.auth.backends.ModelBackend',
+    
+    # 'allauth' specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+SITE_ID = 0

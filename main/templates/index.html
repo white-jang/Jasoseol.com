@@ -1,4 +1,6 @@
 {% load static %}
+{% load socialaccount %}
+{% providers_media_js %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>자소설 닷컴</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 
 <body>
@@ -17,6 +20,8 @@
     {% else %}
     <a href="{% url 'signup' %}"><button>회원가입</button></a>
     <a href="{% url 'login' %}"><button>로그인</button></a>
+
+    <a href="{% provider_login_url 'google' %}"><button>구글로 로그인</button></a>
     {% endif %}
     <p></p>
 
@@ -31,30 +36,54 @@
     </div>
 
     {% if user.is_authenticated %}
-        <a href="{% url 'my_index' %}">
-            <button>내 자기소개서만 보기</button>
-        </a>
-        <a href="{% url 'index' %}">
-            <button>모든 자기소개서 보기</button>
-        </a>
+    <a href="{% url 'my_index' %}">
+        <button>내 자기소개서만 보기</button>
+    </a>
+    <a href="{% url 'index' %}">
+        <button>모든 자기소개서 보기</button>
+    </a>
 
-        <br>
-        <!-- 지금까지 작성된 자소서 띄워주는 부분 -->
-        {% for jss in all_jss %}
-        <a href="{% url 'detail' jss.id %}">
-            <!--url을 걸어주면서 동시에 jss_id 전송-->
-            <div class="all_jss">
-                <p>{{ jss.author }}</p>
+    <br>
+    <!-- 지금까지 작성된 자소서 띄워주는 부분 -->
+    {% for jss in all_jss %}
+    <a href="{% url 'detail' jss.id %}">
+        <!--url을 걸어주면서 동시에 jss_id 전송-->
+        <div class="all_jss">
+            <p>{{ jss.author }}</p>
 
-                <p>{{ jss.title }}</p>
+            <p>{{ jss.title }}</p>
 
-                <p>{{ jss.content }}</p>
+            <p>{{ jss.content }}</p>
 
-                <p>{{ jss.updated_at|date:"Y년m월d일" }}</p>
-            </div>
-        </a>
-        {% endfor %}
+            <p>{{ jss.updated_at|date:"Y년m월d일" }}</p>
+        </div>
+    </a>
+    {% endfor %}
     {% endif %}
+
+    <!-- 페이지 나누기 기능 -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <!-- 그전 페이지가 있으면 (first, last페이지가 아니면)... First, Previous 버튼 보이기-->
+            {% if all_jss.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1" tabindex="-1" aria-disabled="true">First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ all_jss.previous_page_number }}" tabindex="-1"
+                    aria-disabled="true">Previous</a></li>
+            {% endif %}
+
+            <li class="page-item"><a class="page-link" href="#">{{ all_jss.number }} of {{ all_jss.paginator.num_pages }}</a></li>
+
+            {% if all_jss.has_next %}
+            <!-- 다음 페이지가 있으면 (first, last페이지가 아니면)... Next, Last 버튼 보이기-->
+            <li class="page-item"><a class="page-link" href="?page={{ all_jss.next_page_number }}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ all_jss.paginator.num_pages }}">Last</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
 
 </html>
